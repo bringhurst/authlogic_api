@@ -63,7 +63,7 @@ module AuthlogicApi
       #
       # The default implementation of #generate_api_signature is the following:
       #   def generate_api_signature(secret)
-      #     Digest::MD5.hexdigest(build_api_payload + secret)
+      #     Digest::SHA256.hexdigest(build_api_payload + secret)
       #   end
       #
       # Note the call to #build_api_payload, which is another method you may override to customize
@@ -150,7 +150,7 @@ module AuthlogicApi
         end
       
         def generate_api_signature(secret)
-          Digest::MD5.hexdigest(build_api_payload + secret)
+          Digest::SHA512.hexdigest(build_api_payload + secret)
         end
       
         def set_api_magic_columns
