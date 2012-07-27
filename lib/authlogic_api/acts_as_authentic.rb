@@ -10,6 +10,15 @@ module AuthlogicApi
     end
     
     module Config
+      # Whether or not to validate the api_key field.
+      #
+      # * <tt>Default:</tt> true
+      # * <tt>Accepts:</tt> Boolean
+      def validate_api_login(value = nil)
+        rw_config(:validate_api_login, value, true)
+      end
+      alias_method :validate_api_login=, :validate_api_login
+
       # The name of the api key field in the database.
       #
       # * <tt>Default:</tt> :api_key or  :application_key, if they exist
@@ -44,7 +53,9 @@ module AuthlogicApi
     module Methods
       def self.included(klass)
         klass.class_eval do
-          before_validation :generate_key_and_secret, :if => :enable_api_fields_generation?
+          if validate_api_login
+            before_validation :generate_key_and_secret, :if => :enable_api_fields_generation?
+          end
         end
       end
     
